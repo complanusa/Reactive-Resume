@@ -1,11 +1,11 @@
 {
   "projects": {
-    "default": "rx-resume"
+    "default": "react-resume-303712"
   },
   "targets": {
-    "rx-resume": {
+    "react-resume-303712": {
       "hosting": {
-        "rxresume": [
+        "react-resume-303712": [
           "public"
         ]
       }

@@ -211,6 +211,7 @@
       "loggedInText": "Awesome. Now that you've authenticated yourself, we can get on with the real reason you're here. Click on the Go to App button to start building your resume!",
       "buttons": {
         "google": "Sign in with Google",
+        "password": "Sign in with Email",
         "anonymous": "Sign in Anonymously"
       }
     },

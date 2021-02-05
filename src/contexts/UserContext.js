@@ -18,6 +18,7 @@ const defaultState = {
   logout: async () => {},
   loginWithGoogle: async () => {},
   loginAnonymously: async () => {},
+  loginWithPassword: async () => {},
   deleteAccount: async () => {},
 };
 
@@ -53,6 +54,14 @@ const UserProvider = ({ children }) => {
 
     try {
       return await firebase.auth().signInWithPopup(provider);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const loginWithPassword = async (email, password) => {
+    try {
+      return await firebase.auth().signInWithEmailAndPassword(email, password);
     } catch (error) {
       toast.error(error.message);
     }
@@ -138,6 +147,7 @@ const UserProvider = ({ children }) => {
         loading,
         loginWithGoogle,
         loginAnonymously,
+        loginWithPassword,
         deleteAccount,
       }}
     >

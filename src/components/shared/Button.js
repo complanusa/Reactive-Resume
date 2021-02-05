@@ -12,6 +12,7 @@ const Button = ({
   className,
   isLoading,
   isDelete,
+  ...rest
 }) => {
   const { t } = useTranslation();
   const Icon = icon;
@@ -24,6 +25,7 @@ const Button = ({
         [styles.outline]: outline,
         [styles.delete]: isDelete,
       })}
+      {...rest}
     >
       {icon && <Icon size="14" className="mr-3" />}
       {isLoading ? t('shared.buttons.loading') : children}

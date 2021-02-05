@@ -11,11 +11,19 @@ const AuthModal = () => {
   const [open, setOpen] = useState(false);
   const [isLoadingGoogle, setLoadingGoogle] = useState(false);
   const [isLoadingAnonymous, setLoadingAnonymous] = useState(false);
+  const [isLoadingPassword, setLoadingPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [usingPassword, setUsingPassword] = useState(false);
 
   const { emitter, events } = useContext(ModalContext);
-  const { user, loginWithGoogle, loginAnonymously, logout } = useContext(
-    UserContext,
-  );
+  const {
+    user,
+    loginWithGoogle,
+    loginAnonymously,
+    loginWithPassword,
+    logout,
+  } = useContext(UserContext);
 
   useEffect(() => {
     const unbind = emitter.on(events.AUTH_MODAL, () => setOpen(true));
@@ -27,6 +35,13 @@ const AuthModal = () => {
     setLoadingGoogle(true);
     await loginWithGoogle();
     setLoadingGoogle(false);
+  };
+
+  const handleSignInWithPassword = async () => {
+    setLoadingPassword(true);
+    await loginWithPassword(email, password);
+    setLoadingPassword(false);
+    setUsingPassword(false);
   };
 
   const handleSignInAnonymously = async () => {
@@ -61,16 +76,63 @@ const AuthModal = () => {
 
   const loggedOutAction = (
     <div className="flex">
-      <Button isLoading={isLoadingGoogle} onClick={handleSignInWithGoogle}>
-        {t('modals.auth.buttons.google')}
-      </Button>
-      <Button
-        className="ml-8"
-        isLoading={isLoadingAnonymous}
-        onClick={handleSignInAnonymously}
-      >
-        {t('modals.auth.buttons.anonymous')}
-      </Button>
+      {!usingPassword && (
+        <>
+          <Button isLoading={isLoadingGoogle} onClick={handleSignInWithGoogle}>
+            {t('modals.auth.buttons.google')}
+          </Button>
+          <Button
+            isLoading={isLoadingPassword}
+            onClick={() => setUsingPassword(true)}
+          >
+            {t('modals.auth.buttons.password')}
+          </Button>
+          <Button
+            className="ml-8"
+            isLoading={isLoadingAnonymous}
+            onClick={handleSignInAnonymously}
+          >
+            {t('modals.auth.buttons.anonymous')}
+          </Button>
+        </>
+      )}
+      {usingPassword && (
+        <div style={{ width: '100%' }}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSignInWithPassword();
+            }}
+          >
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              style={{
+                color: 'black',
+                paddingLeft: '5px',
+                paddingRight: '5px',
+              }}
+              type="text"
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              style={{
+                color: 'black',
+                paddingLeft: '5px',
+                paddingRight: '5px',
+              }}
+              type="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit">Login</Button>
+            <Button onClick={() => setUsingPassword(false)}>Cancel</Button>
+          </form>
+        </div>
+      )}
     </div>
   );
 
