@@ -39,7 +39,8 @@ const AuthModal = () => {
 
   const handleSignInWithPassword = async () => {
     setLoadingPassword(true);
-    await loginWithPassword(email, password);
+    const userr = await loginWithPassword(email, password);
+    console.log('user: ', userr);
     setLoadingPassword(false);
     setUsingPassword(false);
   };

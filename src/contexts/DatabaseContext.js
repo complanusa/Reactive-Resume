@@ -49,7 +49,7 @@ const DatabaseProvider = ({ children }) => {
     let lastName;
 
     if (!user.isAnonymous) {
-      [firstName, lastName] = user.displayName.split(' ');
+      [firstName, lastName] = (user.displayName || 'Complan User').split(' ');
     }
 
     const resume = {
